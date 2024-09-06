@@ -1,0 +1,12 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  hello(name: String!): String!
+}
+
+type Mutation {
+  wink(name: String!): String!
+}

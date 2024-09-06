@@ -4,18 +4,43 @@
  */
 
 import express from 'express';
-import * as path from 'path';
+import http from 'http';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
-const app = express();
+import createApolloServer from '@/graphql';
+import graphConfig from '@/graphql/config';
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+const startServer = async () => {
+  const app = express();
+  const httpServer = http.createServer(app);
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to backend!' });
-});
+  app.use(compression())
+    .use(cookieParser())
+    .use(express.json())
+    .use(express.urlencoded({ extended: false }));
 
-const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+  const server = createApolloServer(httpServer, graphConfig);
+
+  await server.start();
+
+  app.use(
+    '/api/graphql',
+    cors<cors.CorsRequest>({
+      origin: [ /localhost(:\d+)?$/i ],
+      credentials: true,
+    }),
+  );
+
+  app.get('/hello', (req, res, next) => {
+    res.send('hello');
+  })
+
+  const port = process.env.PORT || 3000;
+  httpServer.listen({ port }, () => {
+    console.log(`Say hello at http://localhost:${port}/hello`);
+  })
+};
+
+startServer();
