@@ -1,6 +1,8 @@
 import { IEnumTypeResolver, IFieldResolverOptions } from '@graphql-tools/utils';
 import { GraphQLFieldResolver, GraphQLScalarType } from 'graphql/type/definition';
 import { DateTimeResolver } from 'graphql-scalars';
+import { MenuItem } from '@react-practice/types';
+
 
 interface FieldResolvers {
   [field: string]: GraphQLFieldResolver<any, any, any>;
@@ -16,6 +18,10 @@ const resolvers: Resolvers = {
   Query: {
     hello (source, args) {
       return 'Hello ' + args.name;
+    },
+
+    menu () {
+      
     },
   },
 

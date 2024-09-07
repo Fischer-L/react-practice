@@ -11,10 +11,10 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": "src",
-    "paths": {
-      "@/*": ["*"]
-    },
+    // "baseUrl": "src",
+    // "paths": {
+    //   "@/*": ["*"]
+    // },
     "esModuleInterop": true
   }
 }

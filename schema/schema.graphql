@@ -5,8 +5,15 @@ schema {
 
 type Query {
   hello(name: String!): String!
+  menu: [MenuItem!]!
 }
 
 type Mutation {
   wink(name: String!): String!
 }
+
+type MenuItem {
+  name: String!,
+  price: Float!,
+}
+

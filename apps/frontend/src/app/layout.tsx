@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import './global.css';
+import './layout.css';
 
 export const metadata = {
   title: 'Welcome to frontend',
@@ -12,7 +14,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="app">
+        <header className="app-header flex flex-row justify-between items-center">
+          <h1 className="app-header-title text-xl">POS System</h1>
+          <Link href="/">
+            <button
+              className="app-header-hoemBtn text-xs middle none center rounded-lg bg-blue-500 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              data-ripple-light="true"
+            >
+              Tables
+            </button>
+          </Link>
+        </header>
+        <section className="app-content">
+          {children}
+        </section>
+        </body>
     </html>
   );
 }
