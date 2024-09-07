@@ -16,6 +16,15 @@ const nextConfig = {
     GRAPH_API_URI: 'http://localhost:4000/api/graphql',
     ENABLE_APOLLO_DEBUG_TOOLS: true,
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(graphql|gql)$/,
+      exclude: /node_modules/,
+      loader: 'graphql-tag/loader'
+    })
+
+    return config
+  },
 };
 
 const plugins = [

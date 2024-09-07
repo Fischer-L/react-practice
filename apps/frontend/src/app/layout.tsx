@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import { ApolloProvider } from '@apollo/client'
+import useApollo from './hooks/useApollo';
+
 import './global.css';
 import './layout.css';
 
@@ -12,6 +15,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const client = useApollo()
+
   return (
     <html lang="en">
       <body className="app">
@@ -26,10 +31,10 @@ export default function RootLayout({
             </button>
           </Link>
         </header>
-        <section className="app-content">
-          {children}
-        </section>
-        </body>
+          <section className="app-content">
+            {children}
+          </section>
+      </body>
     </html>
   );
 }

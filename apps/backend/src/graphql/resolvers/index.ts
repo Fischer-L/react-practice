@@ -28,6 +28,15 @@ const resolvers: Resolvers = {
 
     listTables () {
       return listTable()
+      // const tables = [];
+      // for (let i = 0; i < 5; i++) {
+      //   tables.push({
+      //     id: i,
+      //     orderId: 'order-' + i,
+      //     orderStatus: 'ORDERED',
+      //   });
+      // }
+      // return tables;
     },
   },
 

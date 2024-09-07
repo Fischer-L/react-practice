@@ -30,11 +30,9 @@ const createApolloServer = async (app: Express, graphConfig: GraphConfig): Promi
 
   const apolloServer = new ApolloServer({
     schema,
-    introspection: enablePlayground,
+    introspection: true,
     plugins: [
-      enablePlayground
-        ? ApolloServerPluginLandingPageLocalDefault({ includeCookies: true })
-        : ApolloServerPluginLandingPageDisabled(),
+      ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
       ApolloServerPluginCacheControl(),
       ApolloServerPluginDrainHttpServer({ httpServer }),
     ],

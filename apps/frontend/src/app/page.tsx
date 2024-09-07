@@ -1,5 +1,5 @@
 import styles from './page.module.scss';
-import Table from '@/components/table';
+import Table from './components/table';
 
 export default function Index() {
   return (
