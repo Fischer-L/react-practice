@@ -1,0 +1,7 @@
+query  {
+  listMenuItems {
+    id
+    name
+    price
+  }
+}

@@ -14,7 +14,7 @@ export async function createOrder(order: Order): Promise<Order> {
         order.status = OrderStatus.ORDERED
 
         let result = await client.db('order').collection(collectionName).insertOne(order);
- 
+
         order['id'] = result.insertedId.toString()
         console.log("output createorder :", order);
         return order
@@ -26,21 +26,21 @@ export async function createOrder(order: Order): Promise<Order> {
     }
 }
 
-export async function updateOrder(orderId: string, orderItem: OrderItem): Promise<Order> {
+export async function updateOrder(orderId: string, orderItems: OrderItem): Promise<Order> {
     try {
         // Connect to the MongoDB cluster
         await client.connect();
- 
-        console.log("Databases update :", orderId, orderItem);
+
+        console.log("Databases update :", orderId, orderItems);
         // Make the appropriate DB calls
         let result = await client.db('order').collection(collectionName)
-          .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItem': orderItem, 'time': Date.now()}}, {returnDocument: 'after'});
- 
+          .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItems': orderItems, 'time': Date.now()}}, {returnDocument: 'after'});
+
         console.log("Databases updateOrder :", result);
         return  {
           id: result['_id'].toString(),
           tableId: result['tableId'].toString(),
-          orderItem: result['orderItem'],
+          orderItems: result['orderItems'],
           status: result['status'].toString(),
         }
     } catch (e) {

@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@react-practice/web/*": ["apps/web/src/*"],
       "@react-practice/types": ["types/src/index.ts"]
     }
   },

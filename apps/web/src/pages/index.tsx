@@ -3,10 +3,11 @@ import React from "react";
 
 import { Table as TableType, OrderStatus } from '@react-practice/types';
 
-import To from '../components/To';
-import Title from '../components/Title';
-import Table, { TableRowContents } from '../components/Table';
-import listTablesGQL from '../graphql/schema/listTables.gql';
+import To from '@react-practice/web/components/To';
+import Title from '@react-practice/web/components/Title';
+import Loading from '@react-practice/web/components/Loading';
+import Table, { TableRowCell } from '@react-practice/web/components/Table';
+import listTablesGQL from '@react-practice/web/graphql/schema/listTables.gql';
 
 import styles from './index.module.scss';
 
@@ -27,25 +28,46 @@ export function Index() {
     fetchPolicy: 'network-only',
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <Loading />;
+  }
 
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
 
   const heads = [ 'Table id',  'Status', 'Action' ];
 
   const rows = data.listTables.map(({ id, orderStatus, orderId }: TableType) => {
-    const row: TableRowContents = [ id ];
+    const cells: TableRowCell[] = [{
+      id,
+      content: id,
+    }];
+
     const hasOrder = !!(orderId && orderStatus === OrderStatus.ORDERED);
 
-    row.push(<AvailablityTag hasOrder={hasOrder}/>);
+    cells.push({
+      id: String(hasOrder),
+      content: <AvailablityTag hasOrder={hasOrder}/>,
+    });
+
     if (hasOrder) {
       const href = `/order/${orderId}`;
-      row.push(<To href={href}>view order</To>);
+      cells.push({
+        id: href,
+        content: <To href={href}>view order</To>,
+      });
     } else {
       const href = `/table/${id}/new-order`;
-      row.push(<To href={href}>create order</To>);
+      cells.push({
+        id: href,
+        content: <To href={href}>create order</To>,
+      });
     }
-    return row;
+    return {
+      id,
+      cells,
+    }
   });
 
   return (

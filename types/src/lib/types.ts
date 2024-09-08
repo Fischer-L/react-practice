@@ -19,7 +19,7 @@ interface Order {
   id?: string,
   tableId: string,
   time?: number,
-  orderItem: OrderItem[],
+  orderItems: OrderItem[],
   status?: OrderStatus,
 }
 

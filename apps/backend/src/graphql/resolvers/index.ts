@@ -1,7 +1,7 @@
 import { IEnumTypeResolver, IFieldResolverOptions } from '@graphql-tools/utils';
 import { GraphQLFieldResolver, GraphQLScalarType } from 'graphql/type/definition';
 import { DateTimeResolver } from 'graphql-scalars';
-import { MenuItem } from '@react-practice/types';
+import { MenuItem, OrderStatus } from '@react-practice/types';
 import { listTable } from '../db/table';
 import { listMenuItems } from '../db/menuItem';
 import { createOrder, updateOrder } from '../db/order';
@@ -24,21 +24,48 @@ const resolvers: Resolvers = {
     },
 
     listMenuItems() {
-      return listMenuItems();
+      // return listMenuItems();
+      const items = [];
+      for (let i = 1; i < 11; i++) {
+        items.push({
+          id: i,
+          name: 'menu_item_' + i,
+          price: i * 100,
+        });
+      }
+      return items;
     },
 
     listTables () {
-      return listTable()
+      // return listTable()
+      const items = [];
+      for (let i = 0; i < 5; i++) {
+        items.push({
+          id: i,
+          orderId: null,
+          OrderStatus: null,
+        });
+      }
+      return items;
     },
   },
 
   Mutation: {
     createOrder(source, args) {
-      return createOrder(args.data)
+      console.log(args);
+      // return createOrder(args.data)
+      return {
+        id: 'id',
+        tableId: 'tableId',
+        orderItems: [{
+          menuId: 'menuId',
+          count: 2,
+        }],
+      }
     },
 
     updateOrder(source, args) {
-      return updateOrder(args.data.orderId, args.data.orderItem)
+      return updateOrder(args.data.orderId, args.data.orderItems)
     },
   },
 };

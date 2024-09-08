@@ -7,13 +7,14 @@ type Query {
   hello(name: String!): String!
   listMenuItems: [MenuItem!]!
   listTables: [Table]!
-  getOrderItems(orderId: String!): [OrderItem]!
+  getOrderItems(orderId: String!): Order!
 }
 
 type Mutation {
   wink(name: String!): String!
-  createOrder(data: CreateOrderInput!): OrderResponse!
-  updateOrder(data: UpdateOrderInput!): OrderResponse!
+  # createOrder(data: CreateOrderInput!): Order!
+  createOrder(tableId: String!, orderItems: [OrderItemInput]!): Order!
+  updateOrder(data: UpdateOrderInput!): Order!
   check(tableId: String!): Boolean
 }
 
@@ -29,26 +30,26 @@ enum OrderStatus {
 }
 
 type MenuItem {
-  id: Int!,
+  id: String!,
   name: String!,
   price: Float!,
 }
 
 input CreateOrderInput {
   tableId: String!,
-  orderItem: [OrderItemInput]
+  orderItems: [OrderItemInput]!
 }
 
-type OrderResponse {
+type Order {
   id: String!,
   tableId: String!,
-  orderItem: [OrderItem],
+  orderItems: [OrderItem]!,
   status: String!,
 }
 
 input UpdateOrderInput {
   orderId: String!,
-  orderItem: [OrderItemInput]
+  orderItems: [OrderItemInput]!
 }
 
 type OrderItem {
