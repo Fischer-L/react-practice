@@ -2,6 +2,8 @@ import { IEnumTypeResolver, IFieldResolverOptions } from '@graphql-tools/utils';
 import { GraphQLFieldResolver, GraphQLScalarType } from 'graphql/type/definition';
 import { DateTimeResolver } from 'graphql-scalars';
 import { MenuItem } from '@react-practice/types';
+import { listTable } from '../db/table';
+import { listMenuItems } from '../db/menuItem';
 
 
 interface FieldResolvers {
@@ -20,8 +22,12 @@ const resolvers: Resolvers = {
       return 'Hello ' + args.name;
     },
 
-    menu () {
-      
+    listMenuItem() {
+      return listMenuItems();
+    },
+
+    listTable () {
+      return listTable()
     },
   },
 

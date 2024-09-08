@@ -5,15 +5,55 @@ schema {
 
 type Query {
   hello(name: String!): String!
-  menu: [MenuItem!]!
+  listMenuItems: [MenuItem!]!
+  listTables: [Table]!
+  getOrderItems(orderId: String!): [OrderItem]!
 }
 
 type Mutation {
   wink(name: String!): String!
+  createOrder(data: CreateOrderInput!): [OrderItem]!
+  updateOrder(data: UpdateOrderInput!): [OrderItem]!
+  check(tableId: String!): Boolean
+}
+
+type Table {
+  id: String!,
+  orderId: String,
+  orderStatus: OrderStatus!
+}
+
+enum OrderStatus {
+  ORDERED,
+  PAYED
 }
 
 type MenuItem {
+  id: Int!,
   name: String!,
   price: Float!,
 }
 
+input CreateOrderInput {
+  tableId: String!,
+  orderItem: [OrderItemInput]
+}
+
+input UpdateOrderInput {
+  orderId: String!,
+  orderItem: [OrderItemInput]
+}
+
+type OrderItem {
+  menuId: String!,
+  orderId: String!,
+  count: Int!,
+  total: Float!,
+}
+
+input OrderItemInput {
+  menuId: String!,
+  orderId: String!,
+  count: Int!,
+  total: Float!,
+}
