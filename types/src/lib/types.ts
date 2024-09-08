@@ -7,7 +7,7 @@ interface MenuItem {
 interface Table {
   id: string,
   orderId?: string,
-  orderStatus: OrderStatus,
+  orderStatus?: OrderStatus,
 }
 
 enum TableStatus {

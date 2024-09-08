@@ -20,7 +20,7 @@ type Mutation {
 type Table {
   id: String!,
   orderId: String,
-  orderStatus: OrderStatus!
+  orderStatus: OrderStatus
 }
 
 enum OrderStatus {

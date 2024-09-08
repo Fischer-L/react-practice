@@ -1,6 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
-import React, { ReactElement, ReactNode } from "react";
-import Link from 'next/link';
+import { useQuery } from '@apollo/client';
+import React from "react";
 
 import { Table as TableType, OrderStatus } from '@react-practice/types';
 

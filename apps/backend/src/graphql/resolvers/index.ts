@@ -32,8 +32,8 @@ const resolvers: Resolvers = {
       for (let i = 0; i < 5; i++) {
         tables.push({
           id: i,
-          orderId: 'order-' + i,
-          orderStatus: 'ORDERED',
+          // orderId: 'order-' + i,
+          // orderStatus: 'ORDERED',
         });
       }
       return tables;
