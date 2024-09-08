@@ -22,11 +22,11 @@ const resolvers: Resolvers = {
       return 'Hello ' + args.name;
     },
 
-    listMenuItem() {
+    listMenuItems() {
       return listMenuItems();
     },
 
-    listTable () {
+    listTables () {
       return listTable()
     },
   },
