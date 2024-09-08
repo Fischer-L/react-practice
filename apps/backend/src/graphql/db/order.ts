@@ -1,19 +1,22 @@
-import { Order } from "@react-practice/types";
+import { Order, OrderStatus, OrderItem } from "@react-practice/types";
 import { client } from "./connection";
 import { rejects } from "assert";
+import { ObjectId } from 'mongodb';
 
 const collectionName = "order";
 
-async function createOrder(order: Order): Promise<Order | Error> {
+export async function createOrder(order: Order): Promise<Order> {
     try {
         // Connect to the MongoDB cluster
         await client.connect();
 
-        // Make the appropriate DB calls
-        let result = client.db("order").collection(collectionName).insertOne(order);
+        order.time = Date.now()
+        order.status = OrderStatus.ORDERED
+
+        let result = await client.db('order').collection(collectionName).insertOne(order);
  
-        console.log("Databases createorder :", result);
-        order.id = result.insertedId
+        order['id'] = result.insertedId.toString()
+        console.log("output createorder :", order);
         return order
     } catch (e) {
         console.error(e);
@@ -22,20 +25,24 @@ async function createOrder(order: Order): Promise<Order | Error> {
         await client.close();
     }
 }
-/*
-async function updateOrder(order: Order): Promise<Order | Error> {
+
+export async function updateOrder(orderId: string, orderItem: OrderItem): Promise<Order> {
     try {
         // Connect to the MongoDB cluster
         await client.connect();
-
-        order.time = new Date().getMilliseconds()
-        order.status = 
  
+        console.log("Databases update :", orderId, orderItem);
         // Make the appropriate DB calls
-        let result = client.db("order").collection(collectionName).findOneAndReplace({"_id": order.id}, order);
+        let result = await client.db('order').collection(collectionName)
+          .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItem': orderItem, 'time': Date.now()}}, {returnDocument: 'after'});
  
         console.log("Databases updateOrder :", result);
-        return order
+        return  {
+          id: result['_id'].toString(),
+          tableId: result['tableId'].toString(),
+          orderItem: result['orderItem'],
+          status: result['status'].toString(),
+        }
     } catch (e) {
         console.error(e);
         return e
@@ -43,4 +50,3 @@ async function updateOrder(order: Order): Promise<Order | Error> {
         await client.close();
     }
 }
-    */

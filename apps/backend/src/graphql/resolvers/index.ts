@@ -4,6 +4,7 @@ import { DateTimeResolver } from 'graphql-scalars';
 import { MenuItem } from '@react-practice/types';
 import { listTable } from '../db/table';
 import { listMenuItems } from '../db/menuItem';
+import { createOrder, updateOrder } from '../db/order';
 
 
 interface FieldResolvers {
@@ -32,8 +33,12 @@ const resolvers: Resolvers = {
   },
 
   Mutation: {
-    wink (source, args) {
-      return 'Wink ' + args.name;
+    createOrder(source, args) {
+      return createOrder(args.data)
+    },
+
+    updateOrder(source, args) {
+      return updateOrder(args.data.orderId, args.data.orderItem)
     },
   },
 };

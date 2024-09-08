@@ -16,16 +16,21 @@ enum TableStatus {
 }
 
 interface Order {
-  id: string,
+  id?: string,
   tableId: string,
-  time: number,
-  dishes: MenuItem[],
-  status: OrderStatus,
+  time?: number,
+  orderItem: OrderItem[],
+  status?: OrderStatus,
 }
 
 enum OrderStatus {
   ORDERED = 'ORDERED',
   PAYED = 'PAYED',
+}
+
+interface OrderItem {
+  menuId: string,
+  count: number,
 }
 
 export {
@@ -34,4 +39,5 @@ export {
   TableStatus,
   Order,
   OrderStatus,
+  OrderItem,
 };
