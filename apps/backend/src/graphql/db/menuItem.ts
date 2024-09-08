@@ -13,7 +13,13 @@ export async function listMenuItems(): Promise<MenuItem[]> {
         let results = await cursor.toArray();
  
         console.log("Databases:", results);
-        return results
+        return results.map(doc => {
+          return {
+            id: doc['_id'].toString(),
+            name: doc['name'].toString(),
+            price: doc['price']
+          }
+        })
     } catch (e) {
         console.error(e);
     } finally {

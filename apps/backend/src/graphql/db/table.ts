@@ -11,7 +11,7 @@ async function startOrder(tableId: string): Promise<Table> {
         // todo: add lock to table
         
         // Make the appropriate DB calls
-        let result = client.db("order").collection(collectionName).findOneAndUpdate({_id: tableId}, {"$set": {status: TableStatus.UNAVAILABLE}}, {returnOriginal: true});
+        let result = client.db("order").collection(collectionName).findOneAndUpdate({"_id": tableId}, {"$set": {status: TableStatus.UNAVAILABLE}}, {returnOriginal: true});
  
         console.log("Databases startTable order :", result);
         return result
@@ -29,7 +29,7 @@ export async function listTable(): Promise<Table[]> {
         await client.connect();
  
         // Make the appropriate DB calls
-        let results = client.db("order").collection(collectionName).aggregate([
+        let results = await client.db("order").collection(collectionName).aggregate([
             {
                 $lookup: {
                     from: 'order', 
@@ -50,18 +50,24 @@ export async function listTable(): Promise<Table[]> {
                     path: '$orderData',  
                     preserveNullAndEmptyArrays: true
                 }
-            },
-            {
-                $project: {
-                  _id: 1,
-                  orderId: '$orderData._id',
-                  orderStatus: 'orderData.orderStatus'
-                }
+            // },
+            // {
+            //     $project: {
+            //       orderId: '$orderData._id',
+            //       orderStatus: 'orderData.orderStatus'
+            //     }
             }
         ]).toArray(); 
  
         console.log("Databases:", results);
-        return results
+        return results.map(doc => {
+          let table = {id: doc['_id']};
+          if (doc['orderData']) {
+            table['orderId'] = doc['orderData']['_id'].toString();
+            table['orderStatus'] = doc['orderData']['orderStatus'] || undefined;
+          }
+          return table;
+        })
  
     } catch (e) {
         console.error(e);
