@@ -34,8 +34,6 @@ export async function listTables(): Promise<Table[]> {
     ])
     .toArray();
 
-    console.log('Databases:', results);
-
     return results.map(doc => {
       const table = { id: doc['_id'] };
       if (doc['orderData']) {

@@ -18,7 +18,7 @@ export async function createOrder(tableId: string, orderItems: OrderItem[]): Pro
     const result = await db.collection(collectionName).insertOne(order);
 
     order['id'] = result.insertedId.toString()
-    console.log('output createorder :', order);
+    
     return order
   } catch (e) {
     console.error(e);
