@@ -70,11 +70,14 @@ export async function updateOrder(orderId: string, orderItems: OrderItem[], vers
 export async function checkOrder(orderId: string): Promise<boolean> {
   try {
     const db = await connectMongoDB();
-    await db.collection(collectionName)
-            .findOneAndUpdate(
-              { '_id': new ObjectId(orderId), 'status': OrderStatus.ORDERED }, 
-              { '$set': { 'status': OrderStatus.PAYED, 'time': Date.now() } }
-            );
+    const result = await db.collection(collectionName)
+                           .findOneAndUpdate(
+                             { '_id': new ObjectId(orderId), 'status': OrderStatus.ORDERED }, 
+                             { '$set': { 'status': OrderStatus.PAYED, 'time': Date.now() } }
+                           );
+    if (!result) {
+      throw Error(ApiErrorMessage.ORDER_HAS_BEEN_EDITED);
+    }
     return true
   } catch (e) {
     console.error(e);

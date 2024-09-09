@@ -27,7 +27,7 @@ export default function NewOrderPage () {
     onError (e) {
       let msg = 'System error! Sorry for inconvenience. Please try again later';
       if (e.message === ApiErrorMessage.ORDER_HAS_BEEN_EDITED) {
-        msg = 'Order is created already!';
+        msg = 'Order was created already!';
       }
       alert(msg);
       router.push('/');

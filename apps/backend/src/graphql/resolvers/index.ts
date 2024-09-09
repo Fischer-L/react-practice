@@ -59,8 +59,17 @@ const resolvers: Resolvers = {
       }
     },
 
-    checkOrder (source, args) {
-      return checkOrder(args.orderId);
+    async checkOrder (source, args) {
+      const lock = await acquireLock(args.orderId);
+      if (lock) {
+        try {
+          return checkOrder(args.orderId);
+        } finally {
+          releaseLock(lock);
+        }
+      } else {
+        throw Error(ApiErrorMessage.ORDER_HAS_BEEN_EDITED);
+      }
     }
   },
 };

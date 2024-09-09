@@ -33,7 +33,7 @@ export default function OrderPage () {
     onError (e) {
       let msg;
       if (e.message === ApiErrorMessage.ORDER_HAS_BEEN_EDITED) {
-        msg = 'Cannot update! Order has been updated by others';
+        msg = 'Cannot update order! Order has been updated by others';
       }
       goToHome(router, msg);
     },
@@ -64,8 +64,12 @@ export default function OrderPage () {
         goToHome(router);
       }
     },
-    onError () {
-      goToHome(router);
+    onError (e) {
+      let msg;
+      if (e.message === ApiErrorMessage.ORDER_HAS_BEEN_EDITED) {
+        msg = 'Cannot check order! Order has been updated by others';
+      }
+      goToHome(router, msg);
     },
   });
   const secondaryButtonTitle = 'Check';
