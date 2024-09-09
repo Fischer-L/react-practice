@@ -12,9 +12,8 @@ type Query {
 
 type Mutation {
   wink(name: String!): String!
-  # createOrder(data: CreateOrderInput!): Order!
   createOrder(tableId: String!, orderItems: [OrderItemInput]!): Order!
-  updateOrder(data: UpdateOrderInput!): Order!
+  updateOrder(orderId: String!, orderItems: [OrderItemInput]!): Order!
   check(tableId: String!): Boolean
 }
 
@@ -35,21 +34,11 @@ type MenuItem {
   price: Float!,
 }
 
-input CreateOrderInput {
-  tableId: String!,
-  orderItems: [OrderItemInput]!
-}
-
 type Order {
   id: String!,
   tableId: String!,
   orderItems: [OrderItem]!,
   status: String!,
-}
-
-input UpdateOrderInput {
-  orderId: String!,
-  orderItems: [OrderItemInput]!
 }
 
 type OrderItem {

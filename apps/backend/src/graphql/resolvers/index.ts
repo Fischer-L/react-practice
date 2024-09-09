@@ -65,7 +65,7 @@ const resolvers: Resolvers = {
     },
 
     updateOrder(source, args) {
-      return updateOrder(args.data.orderId, args.data.orderItems)
+      return updateOrder(args.orderId, args.orderItems)
     },
   },
 };
