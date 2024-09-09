@@ -26,10 +26,8 @@ export default function OrderPage () {
   }
 
   const [ updateOrder ] = useMutation(updateOrderGQL, {
-    onCompleted (data) {
-      alert('Order Updated');
-      const { id } = data.createOrder;
-      router.push(`/order/${id}/`);
+    onCompleted () {
+      goToHome(router, 'Order Updated');
     },
     onError () {
       goToHome(router);
