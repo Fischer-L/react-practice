@@ -18,23 +18,12 @@ export async function closeMongoDB() {
   }
 }
 
-export function isMongoConnected() {
-  if (mongoClient) {
-    // if (mongoClient.isConnected()) {
-    //   return true;
-    // }
-    // closeMongoDB();
-    return true;
-  }
-  return false;
-}
-
 export async function connectMongoDB() {
   if (connectPromise) {
     await connectPromise;
   }
 
-  if (mongoDB && isMongoConnected()) {
+  if (mongoDB) {
     return mongoDB;
   }
 

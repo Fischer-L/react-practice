@@ -49,6 +49,21 @@ export async function updateOrder(orderId: string, orderItems: OrderItem[]): Pro
   }
 }
 
+export async function checkOrder(orderId: string): Promise<boolean> {
+  try {
+    const db = await connectMongoDB();
+    await db.collection(collectionName)
+            .findOneAndUpdate(
+              { '_id': new ObjectId(orderId) }, 
+              { '$set': { 'status': OrderStatus.PAYED, 'time': Date.now() } }
+            );
+    return true
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
 export async function getOrder(orderId: string): Promise<Order> {
   try {
     const db = await connectMongoDB();

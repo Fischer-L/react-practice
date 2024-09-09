@@ -4,7 +4,7 @@ import { DateTimeResolver } from 'graphql-scalars';
 import { MenuItem, OrderStatus } from '@react-practice/types';
 import { listTables } from '@react-practice/backend/db/tables';
 import { listMenuItems } from '@react-practice/backend/db/menuItems';
-import { createOrder, updateOrder, getOrder } from '@react-practice/backend/db/orders';
+import { createOrder, updateOrder, checkOrder, getOrder } from '@react-practice/backend/db/orders';
 
 
 interface FieldResolvers {
@@ -21,33 +21,10 @@ const resolvers: Resolvers = {
   Query: {
     listMenuItems() {
       return listMenuItems();
-      // const items = [];
-      // for (let i = 1; i < 11; i++) {
-      //   items.push({
-      //     id: i,
-      //     name: 'menu_item_' + i,
-      //     price: i * 100,
-      //   });
-      // }
-      // return items;
     },
 
     listTables () {
       return listTables();
-      // const items = [];
-      // for (let i = 0; i < 5; i++) {
-      //   items.push({
-      //     id: i,
-      //     orderId: null,
-      //     OrderStatus: null,
-      //   });
-      // }
-      // items[1] = {
-      //   id: '1',
-      //   orderId: '1',
-      //   orderStatus: 'ORDERED',
-      // };
-      // return items;
     },
 
     getOrder (source, args) {
@@ -58,15 +35,7 @@ const resolvers: Resolvers = {
 
   Mutation: {
     createOrder (source, args) {
-      return createOrder(args.tableId, args.orderItems)
-      // return {
-      //   id: '1',
-      //   tableId: 'tableId',
-      //   orderItems: [{
-      //     menuId: 'menuId',
-      //     count: 2,
-      //   }],
-      // }
+      return createOrder(args.tableId, args.orderItems);
     },
 
     updateOrder (source, args) {
@@ -75,7 +44,7 @@ const resolvers: Resolvers = {
 
     checkOrder (source, args) {
       console.log('checkOrder: ', args.orderId);
-      return false;
+      return checkOrder(args.orderId);
     }
   },
 };
