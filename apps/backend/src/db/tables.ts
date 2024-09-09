@@ -1,23 +1,25 @@
-import { Table, TableStatus } from '@react-practice/types';
-import { connectMongoDB } from './connection';
+import { Table, OrderStatus } from '@react-practice/types';
+import { connectMongoDB } from '@react-practice/backend/db/connection';
+import config from '@react-practice/backend/config'
 
-const collectionName = 'table';
+const tablesCollectionName = config.MONGO_DB_COLLECTION.tables;
+const orderCollectionName = config.MONGO_DB_COLLECTION.orders;
 
 export async function listTable(): Promise<Table[]> {
   try {
     const db = await connectMongoDB();
 
-    let results = await db('order').collection(collectionName).aggregate([
+    let results = await db.collection(tablesCollectionName).aggregate([
       {
         $lookup: {
-          from: 'order',
+          from: orderCollectionName,
           localField: '_id',
           foreignField: 'tableId',
           as: 'orderData',
           pipeline: [
             {
               $match: {
-                orderStatus: 'ORDERED',
+                orderStatus: OrderStatus.ORDERED,
               }
             }
           ]
@@ -29,11 +31,13 @@ export async function listTable(): Promise<Table[]> {
           preserveNullAndEmptyArrays: true,
         }
       }
-    ]).toArray();
+    ])
+    .toArray();
 
     console.log('Databases:', results);
+
     return results.map(doc => {
-      let table = { id: doc['_id'] };
+      const table = { id: doc['_id'] };
       if (doc['orderData']) {
         table['orderId'] = doc['orderData']['_id'].toString();
         table['orderStatus'] = doc['orderData']['orderStatus'] || undefined;
