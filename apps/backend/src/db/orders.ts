@@ -1,9 +1,9 @@
 import { Order, OrderStatus, OrderItem } from '@react-practice/types';
 import { connectMongoDB } from './connection';
-import { rejects } from 'assert';
+import config from '@react-practice/backend/config'
 import { ObjectId } from 'mongodb';
 
-const collectionName = 'order';
+const collectionName = config.MONGO_DB_COLLECTION.orders;
 
 export async function createOrder(order: Order): Promise<Order> {
   try {
@@ -12,7 +12,7 @@ export async function createOrder(order: Order): Promise<Order> {
     order.time = Date.now()
     order.status = OrderStatus.ORDERED
 
-    let result = await db('order').collection(collectionName).insertOne(order);
+    let result = await db.collection(collectionName).insertOne(order);
 
     order['id'] = result.insertedId.toString()
     console.log('output createorder :', order);
@@ -27,7 +27,7 @@ export async function updateOrder(orderId: string, orderItems: OrderItem): Promi
   try {
     const db = await connectMongoDB();
 
-    let result = await db('order').collection(collectionName)
+    let result = await db.collection(collectionName)
       .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItems': orderItems, 'time': Date.now()}}, {returnDocument: 'after'});
 
 

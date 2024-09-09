@@ -1,0 +1,23 @@
+name: mydemoapp
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: adminpw
+      MONGO_INITDB_DATABASE: pos_system
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - 27017:27017
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+volumes:
+  redis-data:
+  mongodb-data:

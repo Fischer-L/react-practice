@@ -2,9 +2,9 @@ import { IEnumTypeResolver, IFieldResolverOptions } from '@graphql-tools/utils';
 import { GraphQLFieldResolver, GraphQLScalarType } from 'graphql/type/definition';
 import { DateTimeResolver } from 'graphql-scalars';
 import { MenuItem, OrderStatus } from '@react-practice/types';
-import { listTable } from '../db/table';
-import { listMenuItems } from '../db/menuItem';
-import { createOrder, updateOrder } from '../db/order';
+import { listTable } from '@react-practice/backend/db/tables';
+import { listMenuItems } from '@react-practice/backend/db/menuItems';
+import { createOrder, updateOrder } from '@react-practice/backend/db/orders';
 
 
 interface FieldResolvers {

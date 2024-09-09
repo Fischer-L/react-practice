@@ -13,12 +13,10 @@ import { readFileSync } from 'fs';
 import cors from 'cors';
 
 import resolvers from './resolvers';
-import { GraphConfig } from './config';
 
 const SCHEMA_PATH = './schema/schema.graphql';
 
-const createApolloServer = async (app: Express, graphConfig: GraphConfig): Promise<Server> => {
-  const { enablePlayground } = graphConfig;
+const createApolloServer = async (app: Express): Promise<Server> => {
 
   const httpServer = http.createServer(app);
 

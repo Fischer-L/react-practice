@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@react-practice/web/*": ["apps/web/src/*"],
+      "@react-practice/backend/*": ["apps/backend/src/*"],
       "@react-practice/types": ["types/src/index.ts"]
     }
   },

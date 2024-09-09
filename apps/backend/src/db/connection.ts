@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
-const DB_URL = 'mongodb://admin:adminpw@localhost:27017/'
+import config from '@react-practice/backend/config'
+const { MONGO_DB_URL, MONGO_DB_NAME } = config;
 
 let mongoDB = null;
 let mongoClient = null;
@@ -7,9 +8,13 @@ let connectPromise = null;
 
 export async function closeMongoDB() {
   if (mongoClient) {
-    const client = mongoClient;
-    mongoDB = mongoClient = connectPromise = null;
-    await client.close();
+    try {
+      const client = mongoClient;
+      mongoDB = mongoClient = connectPromise = null;
+      await client.close();
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
@@ -18,7 +23,7 @@ export function isMongoConnected() {
     if (mongoClient.isConnected()) {
       return true;
     }
-    closeMongoDB().catch(e => console.error(e));
+    closeMongoDB();
   }
   return false;
 }
@@ -27,17 +32,18 @@ export async function connectMongoDB() {
   if (connectPromise) {
     await connectPromise;
   }
+
   if (mongoDB && isMongoConnected()) {
     return mongoDB;
   }
 
   try {
-    connectPromise = MongoClient.connect(DB_URL, {
+    connectPromise = MongoClient.connect(MONGO_DB_URL, {
       useUnifiedTopology: true,
     });
     mongoClient = await connectPromise;
-    mongoDB = mongoClient.db();
-    console.log('Connection established to', DB_URL);
+    mongoDB = mongoClient.db(MONGO_DB_NAME);
+    console.log('Connection established to', MONGO_DB_URL);
   } catch (e) {
     console.error(e);
   } finally {
