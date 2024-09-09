@@ -1,53 +1,53 @@
-import { Order, OrderStatus, OrderItem } from "@react-practice/types";
-import { client } from "./connection";
-import { rejects } from "assert";
+import { Order, OrderStatus, OrderItem } from '@react-practice/types';
+import { client } from './connection';
+import { rejects } from 'assert';
 import { ObjectId } from 'mongodb';
 
-const collectionName = "order";
+const collectionName = 'order';
 
 export async function createOrder(order: Order): Promise<Order> {
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
+  try {
+    // Connect to the MongoDB cluster
+    await client.connect();
 
-        order.time = Date.now()
-        order.status = OrderStatus.ORDERED
+    order.time = Date.now()
+    order.status = OrderStatus.ORDERED
 
-        let result = await client.db('order').collection(collectionName).insertOne(order);
+    let result = await client.db('order').collection(collectionName).insertOne(order);
 
-        order['id'] = result.insertedId.toString()
-        console.log("output createorder :", order);
-        return order
-    } catch (e) {
-        console.error(e);
-        return e
-    } finally {
-        await client.close();
-    }
+    order['id'] = result.insertedId.toString()
+    console.log('output createorder :', order);
+    return order
+  } catch (e) {
+    console.error(e);
+    return e;
+  } finally {
+    await client.close();
+  }
 }
 
 export async function updateOrder(orderId: string, orderItems: OrderItem): Promise<Order> {
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
+  try {
+    // Connect to the MongoDB cluster
+    await client.connect();
 
-        console.log("Databases update :", orderId, orderItems);
-        // Make the appropriate DB calls
-        let result = await client.db('order').collection(collectionName)
-          .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItems': orderItems, 'time': Date.now()}}, {returnDocument: 'after'});
+    console.log('Databases update :', orderId, orderItems);
+    // Make the appropriate DB calls
+    let result = await client.db('order').collection(collectionName)
+      .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItems': orderItems, 'time': Date.now()}}, {returnDocument: 'after'});
 
-        console.log("Databases updateOrder :", result);
-        
-        return  {
-          id: result['_id'].toString(),
-          tableId: result['tableId'].toString(),
-          orderItems: result['orderItems'],
-          status: result['status'].toString(),
-        }
-    } catch (e) {
-        console.error(e);
-        return e
-    } finally {
-        await client.close();
+    console.log('Databases updateOrder :', result);
+
+    return  {
+      id: result['_id'].toString(),
+      tableId: result['tableId'].toString(),
+      orderItems: result['orderItems'],
+      status: result['status'].toString(),
     }
+  } catch (e) {
+    console.error(e);
+    return e;
+  } finally {
+    await client.close();
+  }
 }

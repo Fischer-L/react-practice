@@ -1,5 +1,5 @@
 const {MongoClient} = require('mongodb');
-const DB_URL = "mongodb://admin:adminpw@localhost:27017/"
+const DB_URL = 'mongodb://admin:adminpw@localhost:27017/'
 
 export const client = new MongoClient(DB_URL);
 

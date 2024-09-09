@@ -32,8 +32,7 @@ export default function OrderPage () {
       router.push(`/order/${id}/`);
     },
     onError () {
-      alert('System error! Sorry for inconvenience. Please try again later');
-      router.push('/');
+      goToHome(router);
     },
   });
   const primaryButtonTitle = 'Update';
