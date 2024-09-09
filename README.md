@@ -14,7 +14,7 @@
 ## Project Structure
 
 ### Monorepo
-- This project utilize the [NX](https://nx.dev/) framework to manage monorepo for the backend and the frontend codebase
+- This project utilize the [NX](https://nx.dev/) framework to manage the backend and the frontend codebase
 
 ### Schema
 - Please refer to the `schema/schema.graphql` for the graphql schema
@@ -35,7 +35,7 @@
   - Implement the `version` mechanism in orders(table bills) to prevent the data corruption from multiple data updates
 
 ### Frontend
-- The backend server codebase is in the `apps/web`
+- The frontend server codebase is in the `apps/web`
   
 - The tech stacks used:
   - Use [Next.js](https://nextjs.org/) for the React setup and routing
