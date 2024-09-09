@@ -56,7 +56,6 @@ const resolvers: Resolvers = {
     },
 
     checkOrder (source, args) {
-      console.log('checkOrder: ', args.orderId);
       return checkOrder(args.orderId);
     }
   },
