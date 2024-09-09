@@ -37,6 +37,7 @@ export async function updateOrder(orderId: string, orderItems: OrderItem): Promi
           .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItems': orderItems, 'time': Date.now()}}, {returnDocument: 'after'});
 
         console.log("Databases updateOrder :", result);
+        
         return  {
           id: result['_id'].toString(),
           tableId: result['tableId'].toString(),

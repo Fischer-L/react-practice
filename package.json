@@ -13,12 +13,14 @@
     "express": "4.18.1",
     "graphql": "16.9.0",
     "graphql-scalars": "1.23.0",
-    "mongodb": "6.8.1",
     "graphql-tag": "2.12.6",
     "lodash": "4.17.21",
+    "mongodb": "6.8.1",
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "redis": "^4.7.0",
+    "redlock": "^5.0.0-beta.2",
     "tslib": "2.3.0"
   },
   "devDependencies": {
