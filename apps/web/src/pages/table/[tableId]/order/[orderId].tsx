@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { useRouter, NextRouter } from 'next/router'
 import { OrderItem, ApiErrorMessage } from '@react-practice/types';
 import Title from '@react-practice/web/components/Title';
-import MenuOrder, { MenuOrderMap } from '@react-practice/web/components/MenuOrder';
+import MenuOrder from '@react-practice/web/components/MenuOrder';
 import Loading from '@react-practice/web/components/Loading';
 import useMenuOrderData, { MenuOrderData, UpdateMenuOrderMap } from '@react-practice/web/hooks/useMenuOrderMap';
 import checkOrderGQL from '@react-practice/web/graphql/schema/checkOrder.gql';

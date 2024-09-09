@@ -10,14 +10,12 @@ import { onError } from '@apollo/client/link/error';
 import { sha256 } from 'crypto-hash';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
-// import typeDefs from './schema/schema.graphql';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient: ApolloClient<unknown>;
 
 function createApolloClient (): ApolloClient<unknown> {
-  // Log any GraphQL errors or network error that occurred
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       graphQLErrors.map(({ message, locations, path }) =>
@@ -43,7 +41,6 @@ function createApolloClient (): ApolloClient<unknown> {
   return new ApolloClient({
     link: apolloLink,
     cache: new InMemoryCache(),
-    // typeDefs,
     ssrMode: typeof window === 'undefined',
     ssrForceFetchDelay: 100,
     connectToDevTools: ENABLE_APOLLO_DEBUG_TOOLS,
@@ -84,11 +81,3 @@ export function initializeApollo (initialState = null): ApolloClient<unknown> {
   }
   return _apolloClient;
 }
-
-// export function addApolloState (client, pageProps) {
-//   if (pageProps?.props) {
-//     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
-//   }
-
-//   return pageProps
-// }

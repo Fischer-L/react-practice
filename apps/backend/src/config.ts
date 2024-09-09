@@ -6,5 +6,5 @@ export default {
     tables: 'tables',
     menuItems: 'menuItems',
   },
-  RED_LOCK_TTL: 5000000000,
+  RED_LOCK_TTL: 8000,
 };

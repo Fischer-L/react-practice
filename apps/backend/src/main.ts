@@ -7,7 +7,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 
 import createApolloServer from '@react-practice/backend/graphql';
-import populateTestData from '@react-practice/backend/db/populateTestData';
+import populateTestData from '@react-practice/backend/db/utils/populateTestData';
 
 const startServer = async () => {
   console.log('Populating test data...');

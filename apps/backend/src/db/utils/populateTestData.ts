@@ -4,6 +4,7 @@ import { connectMongoDB } from '@react-practice/backend/db/connection';
 
 const { MONGO_DB_COLLECTION } = config;
 
+// This function is only for populating test data
 export default async function populateTestData (): Promise<boolean> {
   try {
     const db = await connectMongoDB();

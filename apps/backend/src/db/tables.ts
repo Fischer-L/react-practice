@@ -45,6 +45,6 @@ export async function listTables(): Promise<Table[]> {
 
   } catch (e) {
     console.error(e);
+    throw e;
   }
-  return [];
 }

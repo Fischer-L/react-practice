@@ -20,6 +20,6 @@ export async function listMenuItems(): Promise<MenuItem[]> {
     })
   } catch (e) {
     console.error(e);
+    throw e;
   }
-  return [];
 }

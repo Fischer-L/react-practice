@@ -9,8 +9,6 @@ import Loading from '@react-practice/web/components/Loading';
 import Table, { TableRowCell } from '@react-practice/web/components/Table';
 import listTablesGQL from '@react-practice/web/graphql/schema/listTables.gql';
 
-import styles from './index.module.scss';
-
 interface AvailablityTagProp {
   hasOrder: boolean
 }
