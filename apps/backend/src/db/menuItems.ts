@@ -11,7 +11,6 @@ export async function listMenuItems(): Promise<MenuItem[]> {
     let cursor = db.collection(collectionName).find({});
     let results = await cursor.toArray();
 
-    console.log('Databases:', results);
     return results.map(doc => {
       return {
         id: doc['_id'].toString(),

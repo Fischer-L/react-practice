@@ -1,7 +1,7 @@
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router'
-import { OrderItem } from '@react-practice/types';
+import { OrderItem, ApiErrorMessage } from '@react-practice/types';
 import Title from '@react-practice/web/components/Title';
 import MenuOrder, { MenuOrderMap } from '@react-practice/web/components/MenuOrder';
 import Loading from '@react-practice/web/components/Loading';
@@ -25,8 +25,12 @@ export default function NewOrderPage () {
       const { id } = data.createOrder;
       router.push(`/table/${tableId}/order/${id}`);
     },
-    onError () {
-      alert('System error! Sorry for inconvenience. Please try again later');
+    onError (e) {
+      let msg = 'System error! Sorry for inconvenience. Please try again later';
+      if (e.message === ApiErrorMessage.ORDER_UNDER_EDTING) {
+        msg = 'Order is created already or under editing!';
+      }
+      alert(msg);
       router.push('/');
     },
   });

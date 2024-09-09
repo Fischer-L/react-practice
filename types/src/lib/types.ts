@@ -33,6 +33,10 @@ interface OrderItem {
   count: number,
 }
 
+enum ApiErrorMessage {
+  ORDER_UNDER_EDTING = 'ORDER_UNDER_EDTING'
+}
+
 export {
   MenuItem,
   Table,
@@ -40,4 +44,5 @@ export {
   Order,
   OrderStatus,
   OrderItem,
+  ApiErrorMessage,
 };

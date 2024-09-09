@@ -1,11 +1,11 @@
 import { IEnumTypeResolver, IFieldResolverOptions } from '@graphql-tools/utils';
 import { GraphQLFieldResolver, GraphQLScalarType } from 'graphql/type/definition';
 import { DateTimeResolver } from 'graphql-scalars';
-import { MenuItem, OrderStatus } from '@react-practice/types';
+import { ApiErrorMessage } from '@react-practice/types';
 import { listTables } from '@react-practice/backend/db/tables';
 import { listMenuItems } from '@react-practice/backend/db/menuItems';
 import { createOrder, updateOrder, checkOrder, getOrder } from '@react-practice/backend/db/orders';
-
+import { acquireLock, releaseLock } from '@react-practice/backend/lock/tableLock';
 
 interface FieldResolvers {
   [field: string]: GraphQLFieldResolver<any, any, any>;
@@ -34,8 +34,17 @@ const resolvers: Resolvers = {
   },
 
   Mutation: {
-    createOrder (source, args) {
-      return createOrder(args.tableId, args.orderItems);
+    async createOrder (source, args) {
+      const lock = await acquireLock(args.tableId);
+      if (lock) {
+        try {
+          return createOrder(args.tableId, args.orderItems);
+        } finally {
+          releaseLock(lock);
+        }
+      } else {
+        throw Error(ApiErrorMessage.ORDER_UNDER_EDTING);
+      }
     },
 
     updateOrder (source, args) {
