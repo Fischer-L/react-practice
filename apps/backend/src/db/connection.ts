@@ -6,18 +6,6 @@ let mongoDB = null;
 let mongoClient = null;
 let connectPromise = null;
 
-export async function closeMongoDB() {
-  if (mongoClient) {
-    try {
-      const client = mongoClient;
-      mongoDB = mongoClient = connectPromise = null;
-      await client.close();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}
-
 export async function connectMongoDB() {
   if (connectPromise) {
     await connectPromise;
