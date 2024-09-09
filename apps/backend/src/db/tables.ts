@@ -5,7 +5,7 @@ import config from '@react-practice/backend/config'
 const tablesCollectionName = config.MONGO_DB_COLLECTION.tables;
 const orderCollectionName = config.MONGO_DB_COLLECTION.orders;
 
-export async function listTable(): Promise<Table[]> {
+export async function listTables(): Promise<Table[]> {
   try {
     const db = await connectMongoDB();
 
@@ -19,7 +19,7 @@ export async function listTable(): Promise<Table[]> {
           pipeline: [
             {
               $match: {
-                orderStatus: OrderStatus.ORDERED,
+                status: OrderStatus.ORDERED,
               }
             }
           ]
@@ -40,7 +40,7 @@ export async function listTable(): Promise<Table[]> {
       const table = { id: doc['_id'] };
       if (doc['orderData']) {
         table['orderId'] = doc['orderData']['_id'].toString();
-        table['orderStatus'] = doc['orderData']['orderStatus'] || undefined;
+        table['orderStatus'] = doc['orderData']['status'] || undefined;
       }
       return table;
     });

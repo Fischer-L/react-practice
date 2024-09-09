@@ -20,10 +20,11 @@ export async function closeMongoDB() {
 
 export function isMongoConnected() {
   if (mongoClient) {
-    if (mongoClient.isConnected()) {
-      return true;
-    }
-    closeMongoDB();
+    // if (mongoClient.isConnected()) {
+    //   return true;
+    // }
+    // closeMongoDB();
+    return true;
   }
   return false;
 }
@@ -38,9 +39,7 @@ export async function connectMongoDB() {
   }
 
   try {
-    connectPromise = MongoClient.connect(MONGO_DB_URL, {
-      useUnifiedTopology: true,
-    });
+    connectPromise = MongoClient.connect(MONGO_DB_URL);
     mongoClient = await connectPromise;
     mongoDB = mongoClient.db(MONGO_DB_NAME);
     console.log('Connection established to', MONGO_DB_URL);

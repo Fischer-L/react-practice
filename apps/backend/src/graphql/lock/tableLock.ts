@@ -7,39 +7,39 @@ const client = createClient() //no params: connects to localhost on port 6379
   .connect();
 
 const redlock = new Redlock(
-    // You should have one client for each independent redis node
-    // or cluster.
-    [client],
-    {
-      // The expected clock drift; for more details see:
-      // http://redis.io/topics/distlock
-      driftFactor: 0.01, // multiplied by lock ttl to determine drift time
+  // You should have one client for each independent redis node
+  // or cluster.
+  [client],
+  {
+    // The expected clock drift; for more details see:
+    // http://redis.io/topics/distlock
+    driftFactor: 0.01, // multiplied by lock ttl to determine drift time
 
-      // The max number of times Redlock will attempt to lock a resource
-      // before erroring.
-      retryCount: 10,
+    // The max number of times Redlock will attempt to lock a resource
+    // before erroring.
+    retryCount: 10,
 
-      // the time in ms between attempts
-      retryDelay: 200, // time in ms
+    // the time in ms between attempts
+    retryDelay: 200, // time in ms
 
-      // the max time in ms randomly added to retries
-      // to improve performance under high contention
-      // see https://www.awsarchitectureblog.com/2015/03/backoff.html
-      retryJitter: 200, // time in ms
+    // the max time in ms randomly added to retries
+    // to improve performance under high contention
+    // see https://www.awsarchitectureblog.com/2015/03/backoff.html
+    retryJitter: 200, // time in ms
 
-      // The minimum remaining time on a lock before an extension is automatically
-      // attempted with the `using` API.
-      automaticExtensionThreshold: 500, // time in ms
-    }
-  );
+    // The minimum remaining time on a lock before an extension is automatically
+    // attempted with the `using` API.
+    automaticExtensionThreshold: 500, // time in ms
+  }
+);
 
-  async function acquireLock(key: string, ttl) {
-    const lock = await redlock.lock(key, ttl);
-    console.log(`Lock acquired for resource: ${key}`);
-    return lock;
-}
+// async function acquireLock(key: string, ttl) {
+//   const lock = await redlock.lock(key, ttl);
+//   console.log(`Lock acquired for resource: ${key}`);
+//   return lock;
+// }
 
-async function releaseLock(lock) {
-    await redlock.unlock(lock);
-    console.log(`Lock released`);
-}
+// async function releaseLock(lock) {
+//     await redlock.unlock(lock);
+//     console.log(`Lock released`);
+// }

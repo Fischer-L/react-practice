@@ -5,14 +5,17 @@ import { ObjectId } from 'mongodb';
 
 const collectionName = config.MONGO_DB_COLLECTION.orders;
 
-export async function createOrder(order: Order): Promise<Order> {
+export async function createOrder(tableId: string, orderItems: OrderItem[]): Promise<Order> {
   try {
     const db = await connectMongoDB();
 
-    order.time = Date.now()
-    order.status = OrderStatus.ORDERED
-
-    let result = await db.collection(collectionName).insertOne(order);
+    const order: Order = {
+      tableId,
+      orderItems,
+      time: Date.now(),
+      status: OrderStatus.ORDERED,
+    };
+    const result = await db.collection(collectionName).insertOne(order);
 
     order['id'] = result.insertedId.toString()
     console.log('output createorder :', order);
@@ -23,14 +26,33 @@ export async function createOrder(order: Order): Promise<Order> {
   }
 }
 
-export async function updateOrder(orderId: string, orderItems: OrderItem): Promise<Order> {
+export async function updateOrder(orderId: string, orderItems: OrderItem[]): Promise<Order> {
   try {
     const db = await connectMongoDB();
 
-    let result = await db.collection(collectionName)
-      .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItems': orderItems, 'time': Date.now()}}, {returnDocument: 'after'});
+    const result = await db.collection(collectionName)
+                           .findOneAndUpdate(
+                              { '_id': new ObjectId(orderId) }, 
+                              { '$set': {'orderItems': orderItems, 'time': Date.now() } }, 
+                              { returnDocument: 'after' },
+                            );
 
+    return  {
+      id: result['_id'].toString(),
+      tableId: result['tableId'].toString(),
+      orderItems: result['orderItems'],
+      status: result['status'].toString(),
+    }
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+}
 
+export async function getOrder(orderId: string): Promise<Order> {
+  try {
+    const db = await connectMongoDB();
+    const result = await db.collection(collectionName).findOne({ '_id': new ObjectId(orderId) });
     return  {
       id: result['_id'].toString(),
       tableId: result['tableId'].toString(),
