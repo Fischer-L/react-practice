@@ -52,13 +52,13 @@ export function Index() {
     });
 
     if (hasOrder) {
-      const href = `/order/${orderId}`;
+      const href = `/table/${id}/order/${orderId}`;
       cells.push({
         id: href,
         content: <To href={href}>view order</To>,
       });
     } else {
-      const href = `/table/${id}/new-order`;
+      const href = `/table/${id}/order/new`;
       cells.push({
         id: href,
         content: <To href={href}>create order</To>,

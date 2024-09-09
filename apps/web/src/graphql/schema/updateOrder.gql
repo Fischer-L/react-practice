@@ -1,0 +1,9 @@
+mutation ($tableId: String!, $orderItems: [OrderItemInput]!) {
+  updateOrder(tableId: $tableId, orderItems: $orderItems) {
+    id
+    orderItems {
+      menuId
+      count
+    }
+  }
+}

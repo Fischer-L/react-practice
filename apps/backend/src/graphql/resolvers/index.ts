@@ -48,6 +48,21 @@ const resolvers: Resolvers = {
       }
       return items;
     },
+
+    getOrder (source, args) {
+      const order = {
+        id: args.orderId,
+        tableId: 1,
+        orderItems: [{
+          menuId: 1,
+          count: 1,
+        }, {
+          menuId: 2,
+          count: 2,
+        }],
+        status: 'ORDERED'
+      };
+    },
   },
 
   Mutation: {

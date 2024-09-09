@@ -1,0 +1,10 @@
+query ($orderId: String!) {
+  getOrder(orderId: $orderId) {
+    id
+    tableId
+    orderItems {
+      menuId
+      count
+    }
+  }
+}

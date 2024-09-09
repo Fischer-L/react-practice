@@ -7,7 +7,7 @@ type Query {
   hello(name: String!): String!
   listMenuItems: [MenuItem!]!
   listTables: [Table]!
-  getOrderItems(orderId: String!): Order!
+  getOrder(orderId: String!): Order!
 }
 
 type Mutation {

@@ -1,19 +1,19 @@
-import { useMutation } from '@apollo/client';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router'
 import { OrderItem } from '@react-practice/types';
 import Title from '@react-practice/web/components/Title';
 import MenuOrder, { MenuOrderMap } from '@react-practice/web/components/MenuOrder';
 import Loading from '@react-practice/web/components/Loading';
 import useMenuOrderMap, { UpdateMenuOrderMap } from '@react-practice/web/hooks/useMenuOrderMap';
-import updateOrderGQL from '@react-practice/web/graphql/schema/updateOrder.gql';
+import createOrderGQL from '@react-practice/web/graphql/schema/createOrder.gql';
 
 export default function NewOrderPage () {
   const router = useRouter();
-  const orderId = router.query.id as string;
 
-  const [ updateOrder ] = useMutation(updateOrderGQL, {
+  const [ createOrder ] = useMutation(createOrderGQL, {
     onCompleted (data) {
-      alert('Order Updated');
+      alert('Order created');
       const { id } = data.createOrder;
       router.push(`/order/${id}/`);
     },
@@ -23,33 +23,36 @@ export default function NewOrderPage () {
     },
   });
 
-  const hookVals = useMenuOrderMap(orderId);
+  const hookVals = useMenuOrderMap();
   const menuOrderMap = hookVals[0] as MenuOrderMap;
   const updateMenuOrderMap = hookVals[1] as UpdateMenuOrderMap;
   function handleOrderUpdate (menuId: string, count: number) {
     updateMenuOrderMap(menuId, count);
   }
 
-  const primaryButtonTitle = 'Update';
+  const primaryButtonTitle = 'Create';
   function hanldePrimaryButtonClick () {
+    const tableId = router.query.tableId;
     const orderItems: OrderItem[] = [];
     Object.values(menuOrderMap).forEach(({ id, count }) => {
-      orderItems.push({
-        menuId: id,
-        count,
-      });
+      if (count > 0) {
+        orderItems.push({
+          menuId: id,
+          count,
+        });
+      }
     });
-    updateOrder({
-      variables: {
-        orderId,
-        orderItems,
-      },
-    });
-  }
 
-  const secondaryButtonTitle = 'Check';
-  function hanldeSecondaryButtonClick () {
-    alert('TODO: Check a bill');
+    if (orderItems.length) {
+      createOrder({
+        variables: {
+          tableId,
+          orderItems,
+        },
+      });
+    } else {
+      alert('Please add menu order item to create an order');
+    }
   }
 
   if (!Object.values(menuOrderMap).length) {
@@ -57,15 +60,8 @@ export default function NewOrderPage () {
   }
   return (
     <>
-      <Title title={`Order: ${orderId}`} />
-      <MenuOrder
-        menuOrder={menuOrderMap}
-        handleOrderUpdate={handleOrderUpdate}
-        primaryButtonTitle={primaryButtonTitle}
-        hanldePrimaryButtonClick={hanldePrimaryButtonClick}
-        secondaryButtonTitle={secondaryButtonTitle}
-        hanldeSecondaryButtonClick={hanldeSecondaryButtonClick}
-      />
+      <Title title='Create Order' />
+      <MenuOrder menuOrder={menuOrderMap} handleOrderUpdate={handleOrderUpdate} primaryButtonTitle={primaryButtonTitle} hanldePrimaryButtonClick={hanldePrimaryButtonClick}/>
     </>
   );
 };
