@@ -10,12 +10,13 @@ import createOrderGQL from '@react-practice/web/graphql/schema/createOrder.gql';
 
 export default function NewOrderPage () {
   const router = useRouter();
+  const tableId = router.query.tableId;
 
   const [ createOrder ] = useMutation(createOrderGQL, {
     onCompleted (data) {
       alert('Order created');
       const { id } = data.createOrder;
-      router.push(`/order/${id}/`);
+      router.push(`/table/${tableId}/order/${id}`);
     },
     onError () {
       alert('System error! Sorry for inconvenience. Please try again later');
@@ -32,7 +33,6 @@ export default function NewOrderPage () {
 
   const primaryButtonTitle = 'Create';
   function hanldePrimaryButtonClick () {
-    const tableId = router.query.tableId;
     const orderItems: OrderItem[] = [];
     Object.values(menuOrderMap).forEach(({ id, count }) => {
       if (count > 0) {

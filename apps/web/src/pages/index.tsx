@@ -55,7 +55,7 @@ export function Index() {
       const href = `/table/${id}/order/${orderId}`;
       cells.push({
         id: href,
-        content: <To href={href}>view order</To>,
+        content: <To href={href}>manage order</To>,
       });
     } else {
       const href = `/table/${id}/order/new`;

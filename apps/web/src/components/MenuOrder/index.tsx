@@ -64,7 +64,7 @@ const MenuOrder = ({ menuOrder, handleOrderUpdate, primaryButtonTitle, hanldePri
   if (secondaryButtonTitle && hanldeSecondaryButtonClick) {
     secondaryButton = (
       <button
-        className="middle none center rounded-lg bg-orange-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-orange-500/20 transition-all hover:shadow-lg hover:shadow-orange-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        className="middle none center mr-4 rounded-lg bg-orange-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-orange-500/20 transition-all hover:shadow-lg hover:shadow-orange-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
         onClick={hanldeSecondaryButton}
       >
         {secondaryButtonTitle}
@@ -75,7 +75,7 @@ const MenuOrder = ({ menuOrder, handleOrderUpdate, primaryButtonTitle, hanldePri
     <>
       <Table heads={heads} rows={rows} />
       <div className="w-full pr-10 mt-6 grid justify-items-end">
-        <h3>Total: {total}</h3>
+        <h2 className="font-medium">Total: {total}</h2>
       </div>
       <div className="w-full mt-6 grid justify-items-end">
         <div className="flex">

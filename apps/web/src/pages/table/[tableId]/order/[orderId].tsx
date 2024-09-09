@@ -11,9 +11,6 @@ export default function OrderPage () {
   const router = useRouter();
   const tableId = router.query.tableId as string;
   const orderId = router.query.orderId as string;
-  if (orderId) {
-    return "OrderPage";
-  }
 
   const [ updateOrder ] = useMutation(updateOrderGQL, {
     onCompleted (data) {
@@ -61,7 +58,7 @@ export default function OrderPage () {
   }
   return (
     <>
-      <Title title={`Order: ${orderId}`} />
+      <Title title={`Table: ${tableId} / Order: ${orderId}`} />
       <MenuOrder
         menuOrder={menuOrderMap}
         handleOrderUpdate={handleOrderUpdate}

@@ -46,10 +46,16 @@ const resolvers: Resolvers = {
           OrderStatus: null,
         });
       }
+      items[1] = {
+        id: '1',
+        orderId: '1',
+        orderStatus: 'ORDERED',
+      };
       return items;
     },
 
     getOrder (source, args) {
+      console.log('getOrder: ', args.orderId)
       const order = {
         id: args.orderId,
         tableId: 1,
@@ -60,8 +66,9 @@ const resolvers: Resolvers = {
           menuId: 2,
           count: 2,
         }],
-        status: 'ORDERED'
+        status: 'ORDERED',
       };
+      return order;
     },
   },
 
@@ -70,7 +77,7 @@ const resolvers: Resolvers = {
       console.log(args);
       // return createOrder(args.data)
       return {
-        id: 'id',
+        id: '1',
         tableId: 'tableId',
         orderItems: [{
           menuId: 'menuId',
