@@ -12,6 +12,13 @@ export default function NewOrderPage () {
   const router = useRouter();
   const tableId = router.query.tableId;
 
+  const hookVals = useMenuOrderMap();
+  const menuOrderMap = hookVals[0] as MenuOrderMap;
+  const updateMenuOrderMap = hookVals[1] as UpdateMenuOrderMap;
+  function handleOrderUpdate (menuId: string, count: number) {
+    updateMenuOrderMap(menuId, count);
+  }
+
   const [ createOrder ] = useMutation(createOrderGQL, {
     onCompleted (data) {
       alert('Order created');
@@ -23,14 +30,6 @@ export default function NewOrderPage () {
       router.push('/');
     },
   });
-
-  const hookVals = useMenuOrderMap();
-  const menuOrderMap = hookVals[0] as MenuOrderMap;
-  const updateMenuOrderMap = hookVals[1] as UpdateMenuOrderMap;
-  function handleOrderUpdate (menuId: string, count: number) {
-    updateMenuOrderMap(menuId, count);
-  }
-
   const primaryButtonTitle = 'Create';
   function hanldePrimaryButtonClick () {
     const orderItems: OrderItem[] = [];

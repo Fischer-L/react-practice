@@ -1,16 +1,29 @@
 import { useMutation } from '@apollo/client';
-import { useRouter } from 'next/router'
+import { useRouter, NextRouter } from 'next/router'
 import { OrderItem } from '@react-practice/types';
 import Title from '@react-practice/web/components/Title';
 import MenuOrder, { MenuOrderMap } from '@react-practice/web/components/MenuOrder';
 import Loading from '@react-practice/web/components/Loading';
 import useMenuOrderMap, { UpdateMenuOrderMap } from '@react-practice/web/hooks/useMenuOrderMap';
+import checkOrderGQL from '@react-practice/web/graphql/schema/checkOrder.gql';
 import updateOrderGQL from '@react-practice/web/graphql/schema/updateOrder.gql';
+
+function goToHome (router: NextRouter, msg?: string) {
+  alert(msg || 'System error! Sorry for inconvenience. Please try again later');
+  router.push('/');
+}
 
 export default function OrderPage () {
   const router = useRouter();
   const tableId = router.query.tableId as string;
   const orderId = router.query.orderId as string;
+
+  const hookVals = useMenuOrderMap(orderId);
+  const menuOrderMap = hookVals[0] as MenuOrderMap;
+  const updateMenuOrderMap = hookVals[1] as UpdateMenuOrderMap;
+  function handleOrderUpdate (menuId: string, count: number) {
+    updateMenuOrderMap(menuId, count);
+  }
 
   const [ updateOrder ] = useMutation(updateOrderGQL, {
     onCompleted (data) {
@@ -23,14 +36,6 @@ export default function OrderPage () {
       router.push('/');
     },
   });
-
-  const hookVals = useMenuOrderMap(orderId);
-  const menuOrderMap = hookVals[0] as MenuOrderMap;
-  const updateMenuOrderMap = hookVals[1] as UpdateMenuOrderMap;
-  function handleOrderUpdate (menuId: string, count: number) {
-    updateMenuOrderMap(menuId, count);
-  }
-
   const primaryButtonTitle = 'Update';
   function hanldePrimaryButtonClick () {
     const orderItems: OrderItem[] = [];
@@ -48,9 +53,25 @@ export default function OrderPage () {
     });
   }
 
+  const [ checkOrder ] = useMutation(checkOrderGQL, {
+    onCompleted (data) {
+      if (data.checkOrder) {
+        goToHome(router, 'Order Checked');
+      } else {
+        goToHome(router);
+      }
+    },
+    onError () {
+      goToHome(router);
+    },
+  });
   const secondaryButtonTitle = 'Check';
   function hanldeSecondaryButtonClick () {
-    alert('TODO: Check a bill');
+    checkOrder({
+      variables: {
+        orderId
+      }
+    });
   }
 
   if (!Object.values(menuOrderMap).length) {

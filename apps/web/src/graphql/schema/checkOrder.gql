@@ -1,0 +1,3 @@
+mutation ($orderId: String!) {
+  checkOrder(orderId: $orderId)
+}

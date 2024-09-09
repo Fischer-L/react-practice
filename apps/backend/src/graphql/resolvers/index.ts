@@ -19,10 +19,6 @@ interface Resolvers {
 
 const resolvers: Resolvers = {
   Query: {
-    hello (source, args) {
-      return 'Hello ' + args.name;
-    },
-
     listMenuItems() {
       // return listMenuItems();
       const items = [];
@@ -55,7 +51,7 @@ const resolvers: Resolvers = {
     },
 
     getOrder (source, args) {
-      console.log('getOrder: ', args.orderId)
+      console.log('getOrder: ', args.orderId);
       const order = {
         id: args.orderId,
         tableId: 1,
@@ -73,7 +69,7 @@ const resolvers: Resolvers = {
   },
 
   Mutation: {
-    createOrder(source, args) {
+    createOrder (source, args) {
       console.log(args);
       // return createOrder(args.data)
       return {
@@ -86,9 +82,14 @@ const resolvers: Resolvers = {
       }
     },
 
-    updateOrder(source, args) {
+    updateOrder (source, args) {
       return updateOrder(args.orderId, args.orderItems)
     },
+
+    checkOrder (source, args) {
+      console.log('checkOrder: ', args.orderId);
+      return false;
+    }
   },
 };
 

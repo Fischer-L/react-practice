@@ -33,7 +33,7 @@ export function Index() {
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return <p>Fail to fetch data. Plese run `npx nx run backend:serve` to start the dev server</p>;
   }
 
   const heads = [ 'Table id',  'Status', 'Action' ];
