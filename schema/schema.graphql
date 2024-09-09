@@ -11,7 +11,7 @@ type Query {
 
 type Mutation {
   createOrder(tableId: String!, orderItems: [OrderItemInput]!): Order!
-  updateOrder(orderId: String!, orderItems: [OrderItemInput]!): Order!
+  updateOrder(orderId: String!, orderItems: [OrderItemInput]!, version: Int!): Order!
   checkOrder(orderId: String!): Boolean
 }
 
@@ -36,6 +36,7 @@ type Order {
   id: String!,
   tableId: String!,
   orderItems: [OrderItem]!,
+  version: Int,
   status: String!,
 }
 

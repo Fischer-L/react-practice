@@ -6,9 +6,16 @@ import getOrderGQL from '@react-practice/web/graphql/schema/getOrder.gql';
 import listMenuItemsGQL from '@react-practice/web/graphql/schema/listMenuItems.gql';
 
 export type UpdateMenuOrderMap = (menuId: string, count: number) => void;
-export type UseMenuOrderMapVal = MenuOrderMap | UpdateMenuOrderMap;
 
-function covertToMenuOrderMap (menuItems: MenuItem[], order?: Order | null): MenuOrderMap {
+export interface MenuOrderData {
+  orderId?: string | null,
+  version?: number | null,
+  orderMap: MenuOrderMap
+}
+
+export type UseMenuOrderDataVal = MenuOrderData | UpdateMenuOrderMap;
+
+function covertToMenuOrderData (menuItems: MenuItem[], order?: Order | null): MenuOrderData {
   let orderItemCount: Record<string, number> = {};
   if (order?.orderItems.length) {
     order?.orderItems.forEach(({ menuId, count }) => {
@@ -16,7 +23,7 @@ function covertToMenuOrderMap (menuItems: MenuItem[], order?: Order | null): Men
     });
   }
 
-  return menuItems.reduce((_menuOrder: MenuOrderMap, menuItem: MenuItem) => {
+  const orderMap = menuItems.reduce((_menuOrder: MenuOrderMap, menuItem: MenuItem) => {
     const { id, name, price } = menuItem;
     _menuOrder[id] = {
       id,
@@ -26,22 +33,32 @@ function covertToMenuOrderMap (menuItems: MenuItem[], order?: Order | null): Men
     }
     return _menuOrder;
   }, {});
+
+  return {
+    orderId: order?.id ?? null,
+    version: order?.version ?? null,
+    orderMap,
+  }
 }
 
-export default function useMenuOrderMap (orderId?: string): UseMenuOrderMapVal[] {
+export default function useMenuOrderData (orderId?: string): UseMenuOrderDataVal[] {
   const { loading: menuItemsNotLoaded, data } = useQuery(listMenuItemsGQL, {
     fetchPolicy: 'network-only',
   });
   const listMenuItemsData = menuItemsNotLoaded ? [] : data.listMenuItems;
 
-  const [ menuOrderMap, setMenuOrderMap ] = useState(covertToMenuOrderMap(listMenuItemsData));
+  const [ menuOrderData, setMenuOrder ] = useState(covertToMenuOrderData(listMenuItemsData));
   const updateMenuOrderMap = (menuId: string, count: number) => {
-    setMenuOrderMap({
-      ...menuOrderMap,
+    const menuOrderMap = {
+      ...menuOrderData.orderMap,
       [menuId]: {
-        ...menuOrderMap[menuId],
+        ...menuOrderData.orderMap[menuId],
         count,
       }
+    }
+    setMenuOrder({
+      ...menuOrderData,
+      orderMap: menuOrderMap,
     })
   }
 
@@ -67,8 +84,8 @@ export default function useMenuOrderMap (orderId?: string): UseMenuOrderMapVal[]
     if (menuItemsNotLoaded) {
       return;
     }
-    setMenuOrderMap(covertToMenuOrderMap(listMenuItemsData, orderData));
+    setMenuOrder(covertToMenuOrderData(listMenuItemsData, orderData));
   }, [ listMenuItemsData, orderNotLoaded ]);
 
-  return [ menuOrderMap, updateMenuOrderMap ];
+  return [ menuOrderData, updateMenuOrderMap ];
 }

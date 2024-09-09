@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/client';
 import { useRouter, NextRouter } from 'next/router'
-import { OrderItem } from '@react-practice/types';
+import { OrderItem, ApiErrorMessage } from '@react-practice/types';
 import Title from '@react-practice/web/components/Title';
 import MenuOrder, { MenuOrderMap } from '@react-practice/web/components/MenuOrder';
 import Loading from '@react-practice/web/components/Loading';
-import useMenuOrderMap, { UpdateMenuOrderMap } from '@react-practice/web/hooks/useMenuOrderMap';
+import useMenuOrderData, { MenuOrderData, UpdateMenuOrderMap } from '@react-practice/web/hooks/useMenuOrderMap';
 import checkOrderGQL from '@react-practice/web/graphql/schema/checkOrder.gql';
 import updateOrderGQL from '@react-practice/web/graphql/schema/updateOrder.gql';
 
@@ -18,8 +18,9 @@ export default function OrderPage () {
   const tableId = router.query.tableId as string;
   const orderId = router.query.orderId as string;
 
-  const hookVals = useMenuOrderMap(orderId);
-  const menuOrderMap = hookVals[0] as MenuOrderMap;
+  const hookVals = useMenuOrderData(orderId);
+  const menuOrderData = hookVals[0] as MenuOrderData;
+  const menuOrderMap = menuOrderData.orderMap;
   const updateMenuOrderMap = hookVals[1] as UpdateMenuOrderMap;
   function handleOrderUpdate (menuId: string, count: number) {
     updateMenuOrderMap(menuId, count);
@@ -29,8 +30,12 @@ export default function OrderPage () {
     onCompleted () {
       goToHome(router, 'Order Updated');
     },
-    onError () {
-      goToHome(router);
+    onError (e) {
+      let msg;
+      if (e.message === ApiErrorMessage.ORDER_HAS_BEEN_EDITED) {
+        msg = 'Cannot update! Order has been updated by others';
+      }
+      goToHome(router, msg);
     },
   });
   const primaryButtonTitle = 'Update';
@@ -46,6 +51,7 @@ export default function OrderPage () {
       variables: {
         orderId,
         orderItems,
+        version: menuOrderData.version,
       },
     });
   }

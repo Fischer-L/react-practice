@@ -2,6 +2,7 @@ query ($orderId: String!) {
   getOrder(orderId: $orderId) {
     id
     tableId
+    version
     orderItems {
       menuId
       count

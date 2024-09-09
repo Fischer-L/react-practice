@@ -20,6 +20,7 @@ interface Order {
   tableId: string,
   time?: number,
   orderItems: OrderItem[],
+  version: number,
   status?: OrderStatus,
 }
 
@@ -34,7 +35,7 @@ interface OrderItem {
 }
 
 enum ApiErrorMessage {
-  ORDER_UNDER_EDTING = 'ORDER_UNDER_EDTING'
+  ORDER_HAS_BEEN_EDITED = 'ORDER_UNDER_EDTING'
 }
 
 export {

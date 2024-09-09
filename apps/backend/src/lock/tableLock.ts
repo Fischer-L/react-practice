@@ -14,7 +14,6 @@ const redlock = new Redlock(
 
 export async function acquireLock(key: string) {
   try {
-    console.log('TMP: acquire lock:', key);
     const lock = await redlock.acquire([ `lock:${key}` ], config.RED_LOCK_TTL, {
       retryDelay: 100,
       retryCount: 10,

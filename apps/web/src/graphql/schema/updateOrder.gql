@@ -1,5 +1,5 @@
-mutation ($orderId: String!, $orderItems: [OrderItemInput]!) {
-  updateOrder(orderId: $orderId, orderItems: $orderItems) {
+mutation ($orderId: String!, $orderItems: [OrderItemInput]!, $version: Int!) {
+  updateOrder(orderId: $orderId, orderItems: $orderItems, version: $version) {
     id
     orderItems {
       menuId

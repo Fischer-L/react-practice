@@ -28,31 +28,35 @@ const resolvers: Resolvers = {
     },
 
     getOrder (source, args) {
-      console.log('getOrder: ', args.orderId);
       return getOrder(args.orderId);
     },
   },
 
   Mutation: {
     async createOrder (source, args) {
-      let result;
       const lock = await acquireLock(args.tableId);
       if (lock) {
         try {
-          result = await createOrder(args.tableId, args.orderItems);
-          if (!result) {
-            throw Error(ApiErrorMessage.ORDER_UNDER_EDTING);
-          }
+          return createOrder(args.tableId, args.orderItems);
         } finally {
           releaseLock(lock);
         }
       } else {
-        throw Error(ApiErrorMessage.ORDER_UNDER_EDTING);
+        throw Error(ApiErrorMessage.ORDER_HAS_BEEN_EDITED);
       }
     },
 
-    updateOrder (source, args) {
-      return updateOrder(args.orderId, args.orderItems)
+    async updateOrder (source, args) {
+      const lock = await acquireLock(args.orderId);
+      if (lock) {
+        try {
+          return updateOrder(args.orderId, args.orderItems, args.version);
+        } finally {
+          releaseLock(lock);
+        }
+      } else {
+        throw Error(ApiErrorMessage.ORDER_HAS_BEEN_EDITED);
+      }
     },
 
     checkOrder (source, args) {
