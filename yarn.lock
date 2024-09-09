@@ -4138,6 +4138,11 @@ bl@^4.0.3:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
+bluebird@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
+
 body-parser@1.20.0:
   version "1.20.0"
   resolved "https://registry.npmjs.org/body-parser/-/body-parser-1.20.0.tgz#3de69bd89011c11573d7bfee6a64f11b6bd27cc5"
@@ -9680,9 +9685,9 @@ rechoir@^0.8.0:
   dependencies:
     resolve "^1.20.0"
 
-redis@^4.7.0:
+redis@4.7.0:
   version "4.7.0"
-  resolved "https://registry.yarnpkg.com/redis/-/redis-4.7.0.tgz#b401787514d25dd0cfc22406d767937ba3be55d6"
+  resolved "https://registry.npmjs.org/redis/-/redis-4.7.0.tgz#b401787514d25dd0cfc22406d767937ba3be55d6"
   integrity sha512-zvmkHEAdGMn+hMRXuMBtu4Vo5P6rHQjLoHftu+lBqq8ZTA3RCVC/WzD790bkKKiNFp7d5/9PcSD19fJyyRvOdQ==
   dependencies:
     "@redis/bloom" "1.2.0"
@@ -9692,12 +9697,12 @@ redis@^4.7.0:
     "@redis/search" "1.2.0"
     "@redis/time-series" "1.1.0"
 
-redlock@^5.0.0-beta.2:
-  version "5.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/redlock/-/redlock-5.0.0-beta.2.tgz#a629c07e07d001c0fdd9f2efa614144c4416fe44"
-  integrity sha512-2RDWXg5jgRptDrB1w9O/JgSZC0j7y4SlaXnor93H/UJm/QyDiFgBKNtrh0TI6oCXqYSaSoXxFh6Sd3VtYfhRXw==
+redlock@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmjs.org/redlock/-/redlock-4.2.0.tgz#c26590768559afd5fff76aa1133c94b411ff4f5f"
+  integrity sha512-j+oQlG+dOwcetUt2WJWttu4CZVeRzUrcVcISFmEmfyuwCVSJ93rDT7YSgg7H7rnxwoRyk/jU46kycVka5tW7jA==
   dependencies:
-    node-abort-controller "^3.0.1"
+    bluebird "^3.7.2"
 
 reflect.getprototypeof@^1.0.4:
   version "1.0.6"
