@@ -1,5 +1,4 @@
 
-import { createClient } from 'redis';
 const Redis = require("ioredis");
 import Redlock from 'redlock';
 
@@ -7,7 +6,6 @@ import config from '@react-practice/backend/config';
 
 const redisClient = new Redis();
 const redlock = new Redlock(
-  // You should have one client for each independent redis node or cluster.
   [ redisClient ],
   { 
     retryCount: 1,

@@ -9,6 +9,14 @@ export async function createOrder(tableId: string, orderItems: OrderItem[]): Pro
   try {
     const db = await connectMongoDB();
 
+    const exisingCount = await db.collection(collectionName).countDocuments({
+      'tableId': tableId,
+      'status': OrderStatus.ORDERED,
+    });
+    if (exisingCount > 0) {
+      return null;
+    }
+
     const order: Order = {
       tableId,
       orderItems,
@@ -16,13 +24,11 @@ export async function createOrder(tableId: string, orderItems: OrderItem[]): Pro
       status: OrderStatus.ORDERED,
     };
     const result = await db.collection(collectionName).insertOne(order);
-
     order['id'] = result.insertedId.toString()
-    
     return order
   } catch (e) {
     console.error(e);
-    return e;
+    return null;
   }
 }
 

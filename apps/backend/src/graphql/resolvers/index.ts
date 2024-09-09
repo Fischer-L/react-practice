@@ -35,10 +35,14 @@ const resolvers: Resolvers = {
 
   Mutation: {
     async createOrder (source, args) {
+      let result;
       const lock = await acquireLock(args.tableId);
       if (lock) {
         try {
-          return createOrder(args.tableId, args.orderItems);
+          result = await createOrder(args.tableId, args.orderItems);
+          if (!result) {
+            throw Error(ApiErrorMessage.ORDER_UNDER_EDTING);
+          }
         } finally {
           releaseLock(lock);
         }
