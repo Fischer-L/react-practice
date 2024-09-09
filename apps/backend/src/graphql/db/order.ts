@@ -1,5 +1,5 @@
 import { Order, OrderStatus, OrderItem } from '@react-practice/types';
-import { client } from './connection';
+import { connectMongoDB } from './connection';
 import { rejects } from 'assert';
 import { ObjectId } from 'mongodb';
 
@@ -7,13 +7,12 @@ const collectionName = 'order';
 
 export async function createOrder(order: Order): Promise<Order> {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
+    const db = await connectMongoDB();
 
     order.time = Date.now()
     order.status = OrderStatus.ORDERED
 
-    let result = await client.db('order').collection(collectionName).insertOne(order);
+    let result = await db('order').collection(collectionName).insertOne(order);
 
     order['id'] = result.insertedId.toString()
     console.log('output createorder :', order);
@@ -21,22 +20,16 @@ export async function createOrder(order: Order): Promise<Order> {
   } catch (e) {
     console.error(e);
     return e;
-  } finally {
-    await client.close();
   }
 }
 
 export async function updateOrder(orderId: string, orderItems: OrderItem): Promise<Order> {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
+    const db = await connectMongoDB();
 
-    console.log('Databases update :', orderId, orderItems);
-    // Make the appropriate DB calls
-    let result = await client.db('order').collection(collectionName)
+    let result = await db('order').collection(collectionName)
       .findOneAndUpdate({'_id':new ObjectId(orderId)}, {'$set': {'orderItems': orderItems, 'time': Date.now()}}, {returnDocument: 'after'});
 
-    console.log('Databases updateOrder :', result);
 
     return  {
       id: result['_id'].toString(),
@@ -47,7 +40,5 @@ export async function updateOrder(orderId: string, orderItems: OrderItem): Promi
   } catch (e) {
     console.error(e);
     return e;
-  } finally {
-    await client.close();
   }
 }

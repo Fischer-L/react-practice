@@ -1,15 +1,13 @@
 import { MenuItem } from '@react-practice/types';
-import { client } from './connection';
+import { connectMongoDB } from './connection';
 
 const collectionName = 'menuItem';
 
 export async function listMenuItems(): Promise<MenuItem[]> {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
+    const db = await connectMongoDB();
 
-    // Make the appropriate DB calls
-    let cursor = client.db('order').collection(collectionName).find({});
+    let cursor = db('order').collection(collectionName).find({});
     let results = await cursor.toArray();
 
     console.log('Databases:', results);
@@ -22,8 +20,6 @@ export async function listMenuItems(): Promise<MenuItem[]> {
     })
   } catch (e) {
     console.error(e);
-  } finally {
-    await client.close();
   }
   return [];
 }

@@ -1,15 +1,13 @@
 import { Table, TableStatus } from '@react-practice/types';
-import { client } from './connection';
+import { connectMongoDB } from './connection';
 
 const collectionName = 'table';
 
 export async function listTable(): Promise<Table[]> {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
+    const db = await connectMongoDB();
 
-      // Make the appropriate DB calls
-    let results = await client.db('order').collection(collectionName).aggregate([
+    let results = await db('order').collection(collectionName).aggregate([
       {
         $lookup: {
           from: 'order',
@@ -45,8 +43,6 @@ export async function listTable(): Promise<Table[]> {
 
   } catch (e) {
     console.error(e);
-  } finally {
-    await client.close();
   }
   return [];
 }
